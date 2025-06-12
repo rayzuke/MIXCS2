@@ -22,13 +22,7 @@
 
         h1,
         p {
-            color: #e63946;
-        }
-
-        .error-message {
-            display: none;
-            color: #ff0000;
-            font-weight: bold;
+            color: ##FFFFFF;
         }
 
         .footer {
@@ -42,34 +36,28 @@
 
 <body>
     <main>
-        <h1>Redirecionando para MIXCS2...</h1>
-        <p>Se não funcionar, <a id="clickHere" href="#" style="cursor: pointer; color: #fcfcfc; text-decoration: underline;">clica aqui</a>.</p>
-        <p id="errorMessage" class="error-message" style="display: block;">Endereço não especificado.</p>
+        <img src="https://iili.io/3GS4g1V.png"></img>
+        <h1>Clique em "Abrir Steam" acima para entrar...</h1>
+        <p>Se não aparecer nada, <a id="cliqueaqui" href="#" style="cursor: pointer; color: #fcfcfc; text-decoration: underline;">clica aqui</a>.</p>
     </main>
 
     <footer class="footer">
-        MIXCS2
+        dsc.gg/mixcs2
     </footer>
 
     <script>
         function redirectToSteam() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const ipPort = urlParams.get('address');
 
-            if (ipPort) {
                 const steamConnectUrl = `steam://connect/177.54.145.59:27061/491092`;
 
                 setTimeout(() => {
                     window.location.href = steamConnectUrl;
                 }, 100);
-            } else {
-                document.getElementById('errorMessage').style.display = 'block';
             }
-        }
 
         window.onload = redirectToSteam;
 
-        document.getElementById('clickHere').addEventListener('click', function(event) {
+        document.getElementById('cliqueaqui').addEventListener('click', function(event) {
             event.preventDefault();
             redirectToSteam();
         });

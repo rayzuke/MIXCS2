@@ -1,0 +1,80 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrando no MIX</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #181818;
+            color: #afafaf;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1; 
+            padding: 2rem;
+        }
+
+        h1,
+        p {
+            color: #e63946;
+        }
+
+        .error-message {
+            display: none;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: auto; 
+            padding: 1rem;
+            background-color: #282828;
+            color: #888888;
+        }
+    </style>
+<style type="text/css"></style><style type="text/css" id="operaUserStyle"></style></head>
+
+<body>
+    <main>
+        <h1>Redirecionando para MIXCS2...</h1>
+        <p>Se não funcionar, <a id="clickHere" href="#" style="cursor: pointer; color: #fcfcfc; text-decoration: underline;">clica aqui</a>.</p>
+        <p id="errorMessage" class="error-message" style="display: block;">Endereço não especificado.</p>
+    </main>
+
+    <footer class="footer">
+        MIXCS2
+    </footer>
+
+    <script>
+        function redirectToSteam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const ipPort = urlParams.get('address');
+
+            if (ipPort) {
+                const steamConnectUrl = `steam://connect/${ipPort}`;
+
+                setTimeout(() => {
+                    window.location.href = steamConnectUrl;
+                }, 100);
+            } else {
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        }
+
+        window.onload = redirectToSteam;
+
+        document.getElementById('clickHere').addEventListener('click', function(event) {
+            event.preventDefault();
+            redirectToSteam();
+        });
+    </script>
+
+
+
+</body></html>

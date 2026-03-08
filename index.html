@@ -52,6 +52,10 @@
                 linear-gradient(180deg, var(--bg-3) 0%, var(--bg-2) 24%, var(--bg-1) 62%, var(--bg-0) 100%);
         }
 
+        body.loading-active {
+            overflow: hidden;
+        }
+
         body {
             position: relative;
             display: flex;
@@ -123,6 +127,309 @@
         @keyframes sweepMove {
             0% { transform: translateY(-100%); }
             100% { transform: translateY(100%); }
+        }
+
+        /* LOADING SCREEN */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 50% 22%, rgba(89, 217, 255, 0.14), transparent 18%),
+                radial-gradient(circle at 50% 78%, rgba(34, 187, 255, 0.06), transparent 24%),
+                linear-gradient(180deg, #081225 0%, #050c19 45%, #02050c 100%);
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-screen::before,
+        .loading-screen::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .loading-screen::before {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.04) 0.7px, transparent 0.9px);
+            background-size: 4px 4px;
+            opacity: 0.05;
+            mix-blend-mode: screen;
+        }
+
+        .loading-screen::after {
+            background:
+                linear-gradient(
+                    to bottom,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.008) 48%,
+                    rgba(255, 255, 255, 0.022) 50%,
+                    rgba(255, 255, 255, 0.008) 52%,
+                    transparent 100%
+                );
+            background-size: 100% 6px;
+            opacity: 0.18;
+            mix-blend-mode: screen;
+        }
+
+        .loading-grid {
+            position: relative;
+            z-index: 2;
+            width: min(92vw, 760px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 22px;
+            padding: 24px;
+        }
+
+        .loading-logo-stage {
+            position: relative;
+            width: min(520px, 78vw);
+            min-height: 210px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-logo-stage::before {
+            content: "";
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(89, 217, 255, 0.24), transparent 72%);
+            filter: blur(46px);
+            animation: auraPulse 3.2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .loading-logo-stage::after {
+            content: "";
+            position: absolute;
+            width: 64%;
+            height: 20%;
+            bottom: 18%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.20), rgba(89, 217, 255, 0.09), transparent 72%);
+            filter: blur(28px);
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        .loading-logo-wrap {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            isolation: isolate;
+            animation: logoFloat 4s ease-in-out infinite;
+        }
+
+        .loading-logo-glow {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            opacity: 0.82;
+            filter:
+                blur(20px)
+                drop-shadow(0 0 36px rgba(89, 217, 255, 0.56))
+                drop-shadow(0 0 84px rgba(34, 187, 255, 0.20));
+            pointer-events: none;
+        }
+
+        .loading-logo-main {
+            position: relative;
+            width: 100%;
+            height: auto;
+            display: block;
+            z-index: 2;
+            filter:
+                drop-shadow(0 0 18px rgba(255, 255, 255, 0.12))
+                drop-shadow(0 0 30px rgba(89, 217, 255, 0.34))
+                drop-shadow(0 0 72px rgba(34, 187, 255, 0.18));
+            animation: logoFlicker 3.8s infinite;
+        }
+
+        .loading-logo-glitch {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0.95;
+            mix-blend-mode: screen;
+        }
+
+        .loading-logo-glitch::before,
+        .loading-logo-glitch::after,
+        .loading-logo-glitch .g3,
+        .loading-logo-glitch .g4 {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: center / contain no-repeat url("https://iili.io/3GS4g1V.png");
+            mix-blend-mode: screen;
+        }
+
+        .loading-logo-glitch::before {
+            filter: hue-rotate(165deg) saturate(1.45) brightness(1.24);
+            transform: translate(7px, 0);
+            clip-path: inset(10% 0 56% 0);
+            animation: logoGlitchA 1.35s infinite steps(2, end);
+            opacity: 0.95;
+        }
+
+        .loading-logo-glitch::after {
+            filter: hue-rotate(-35deg) saturate(1.28) brightness(1.12);
+            transform: translate(-7px, 0);
+            clip-path: inset(62% 0 8% 0);
+            animation: logoGlitchB 1.1s infinite steps(2, end);
+            opacity: 0.92;
+        }
+
+        .loading-logo-glitch .g3 {
+            filter: hue-rotate(210deg) saturate(1.35) brightness(1.18);
+            transform: translate(0, -3px);
+            clip-path: inset(34% 0 34% 0);
+            animation: logoGlitchC 0.95s infinite steps(2, end);
+            opacity: 0.78;
+        }
+
+        .loading-logo-glitch .g4 {
+            filter: brightness(1.25) saturate(1.3);
+            transform: translate(3px, 2px);
+            clip-path: inset(0 0 0 0);
+            animation: logoGlitchFlash 2.2s infinite steps(2, end);
+            opacity: 0.14;
+        }
+
+        .loading-title {
+            font-size: 13px;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--blue);
+            text-align: center;
+            text-shadow: 0 0 12px rgba(89, 217, 255, 0.18);
+        }
+
+        .loading-subtitle {
+            font-size: 12px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .loading-bar-shell {
+            position: relative;
+            width: min(520px, 82vw);
+            height: 20px;
+            clip-path: var(--clip-shape-small);
+            overflow: hidden;
+            background:
+                linear-gradient(180deg, rgba(5, 11, 22, 0.98), rgba(3, 7, 16, 1));
+            box-shadow:
+                inset 0 0 24px rgba(89, 217, 255, 0.05),
+                0 0 18px rgba(34, 187, 255, 0.06);
+        }
+
+        .loading-bar-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(89, 217, 255, 0.22), rgba(89, 217, 255, 0.72), rgba(89, 217, 255, 0.16));
+            clip-path: var(--clip-shape-small);
+            -webkit-mask:
+                linear-gradient(#000 0 0) content-box,
+                linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .loading-bar-fill {
+            position: absolute;
+            inset: 2px auto 2px 2px;
+            width: 0%;
+            clip-path: var(--clip-shape-small);
+            background:
+                linear-gradient(90deg, rgba(34, 187, 255, 0.88), rgba(153, 238, 255, 0.98), rgba(34, 187, 255, 0.88));
+            box-shadow:
+                0 0 18px rgba(89, 217, 255, 0.34),
+                0 0 42px rgba(34, 187, 255, 0.18);
+            transition: width 0.18s ease-out;
+        }
+
+        .loading-bar-fill::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.45) 45%,
+                    transparent 100%
+                );
+            transform: translateX(-100%);
+            animation: loadingSweep 1.2s linear infinite;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes loadingSweep {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(220%); }
+        }
+
+        .loading-meta {
+            width: min(520px, 82vw);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .loading-status {
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .loading-percent {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--blue-3);
+            text-shadow: 0 0 12px rgba(89, 217, 255, 0.18);
+        }
+
+        .loading-dots::after {
+            content: "";
+            display: inline-block;
+            width: 1.4em;
+            text-align: left;
+            animation: loadingDots 1.2s steps(4, end) infinite;
+        }
+
+        @keyframes loadingDots {
+            0% { content: ""; }
+            25% { content: "."; }
+            50% { content: ".."; }
+            75% { content: "..."; }
+            100% { content: ""; }
         }
 
         .wrap {
@@ -1456,6 +1763,11 @@
                 min-height: 230px;
             }
 
+            .loading-logo-stage {
+                width: min(440px, 82vw);
+                min-height: 180px;
+            }
+
             .console-connect-row {
                 grid-template-columns: 1fr;
             }
@@ -1475,6 +1787,23 @@
             .logo-stage {
                 width: min(480px, 96vw);
                 min-height: 190px;
+            }
+
+            .loading-grid {
+                gap: 18px;
+                padding: 18px;
+            }
+
+            .loading-logo-stage {
+                width: min(360px, 84vw);
+                min-height: 150px;
+            }
+
+            .loading-title,
+            .loading-subtitle,
+            .loading-status,
+            .loading-percent {
+                font-size: 11px;
             }
 
             .cy-btn {
@@ -1541,7 +1870,48 @@
         }
     </style>
 </head>
-<body>
+<body class="loading-active">
+    <div id="loadingScreen" class="loading-screen" aria-hidden="false">
+        <div class="loading-grid">
+            <div class="loading-title">Bem vindo ao MIXCS2</div>
+
+            <section class="loading-logo-stage">
+                <div class="loading-logo-wrap">
+                    <img
+                        class="loading-logo-glow"
+                        src="https://iili.io/3GS4g1V.png"
+                        alt=""
+                        aria-hidden="true"
+                        onerror="this.src='https://i.imgur.com/3GS4g1V.png';"
+                    />
+
+                    <img
+                        class="loading-logo-main"
+                        src="https://iili.io/3GS4g1V.png"
+                        alt="Logo MIXCS2"
+                        onerror="this.src='https://i.imgur.com/3GS4g1V.png';"
+                    />
+
+                    <div class="loading-logo-glitch">
+                        <span class="g3"></span>
+                        <span class="g4"></span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="loading-subtitle">Carregando...</div>
+
+            <div class="loading-bar-shell" aria-hidden="true">
+                <div id="loadingBarFill" class="loading-bar-fill"></div>
+            </div>
+
+            <div class="loading-meta">
+                <div id="loadingStatus" class="loading-status loading-dots">Carregando módulos</div>
+                <div id="loadingPercent" class="loading-percent">0%</div>
+            </div>
+        </div>
+    </div>
+
     <canvas id="networkCanvas"></canvas>
     <div class="fx-noise"></div>
     <div class="fx-scanlines"></div>
@@ -1599,7 +1969,7 @@
 
                     <span class="btn-text">
                         <strong>Entrar no servidor</strong>
-                        <span>Clica em abrir com steam</span>
+                        <span>CLICA EM ABRIR COM STEAM</span>
                     </span>
 
                     <span class="btn-arrow">›</span>
@@ -1626,7 +1996,7 @@
 
                     <span class="btn-text">
                         <strong>Mudar skins</strong>
-                        <span>Tutorial no vídeo abaixo</span>
+                        <span>TUTORIAL NO VÍDEO ABAIXO</span>
                     </span>
 
                     <span class="btn-arrow">›</span>
@@ -1635,7 +2005,7 @@
 
             <a
                 class="cy-btn"
-                href="https://discord.gg/tvgqV5Nyga"
+                href="https://dsc.gg/mixcs2"
                 target="_blank"
                 rel="noopener noreferrer"
             >
@@ -1656,7 +2026,7 @@
 
                     <span class="btn-text">
                         <strong>Entrar no Discord</strong>
-                        <span>Link Permanente pode copiar</span>
+                        <span>Esse link é permanente pode copiar</span>
                     </span>
 
                     <span class="btn-arrow">›</span>
@@ -1727,8 +2097,8 @@
                 <div class="video-header">
                     <div class="video-title-wrap">
                         <span class="video-kicker">YOUTUBE</span>
-                        <h2 class="video-title">Tutorial de Skins</h2>
-                        <span class="video-subtitle">Lembre de digitar !ws para atualizar as skins no servidor, não precisa mais sair e entrar</span>
+                        <h2 class="video-title">COMO MUDAR AS SKINS NO SERVIDOR</h2>
+                        <span class="video-subtitle">NÃO PRECISA MAIS RECONECTAR BASTA DIGITAR !WS PARA ATUALIZAR AS SKINS</span>
                     </div>
                 </div>
 
@@ -1770,7 +2140,7 @@
             </div>
         </section>
 
-        <div class="footer">FEITO POR RAY PARA MIXCS2</div>
+        <div class="footer">DSC.GG/MIXCS2</div>
     </main>
 
     <div id="commandsModal" class="modal-overlay" aria-hidden="true">
@@ -1803,16 +2173,16 @@
             {
                 title: "Gerais",
                 items: [
-                    { command: "!modes", description: "Troca de modo." },
+                    { command: "!modes", description: "Troca de modo de jogo." },
                     { command: "!discord", description: "Mostra o link do Discord do servidor." },
-                    { command: "!ws", description: "Atualiza as skins." }
+                    { command: "!ws", description: "Atualiza as skins skins." }
                 ]
             },
             {
                 title: "X1 / Mix",
                 items: [
                     { command: "!x1", description: "Abre ou interage com o sistema de X1." },
-                    { command: "!x1fim", description: "Termina o X1." }
+                    { command: "!x1fim", description: "Finaliza o X1 atual." }
                 ]
             },
             {
@@ -1826,7 +2196,7 @@
             {
                 title: "Administração",
                 items: [
-                    { command: "!admin", description: "Painel de Admin." }
+                    { command: "!admin", description: "Abre o painel de admin." }
                 ]
             }
         ];
@@ -1840,6 +2210,10 @@
         const copyConnectBtn = document.getElementById("copyConnectBtn");
         const copyConnectBtnLabel = document.getElementById("copyConnectBtnLabel");
         const consoleConnectText = document.getElementById("consoleConnectText");
+        const loadingScreen = document.getElementById("loadingScreen");
+        const loadingBarFill = document.getElementById("loadingBarFill");
+        const loadingPercent = document.getElementById("loadingPercent");
+        const loadingStatus = document.getElementById("loadingStatus");
 
         function renderCommands() {
             commandsGrid.innerHTML = "";
@@ -2257,6 +2631,81 @@
             });
         }
 
+        function setupLoadingScreen() {
+            let currentProgress = 0;
+            let siteLoaded = false;
+            const startTime = performance.now();
+            const minimumVisibleTime = 1600;
+
+            const loadingSteps = [
+                { limit: 18, text: "Carregando módulos" },
+                { limit: 36, text: "Sincronizando interface" },
+                { limit: 54, text: "Inicializando efeitos" },
+                { limit: 72, text: "Preparando comandos" },
+                { limit: 88, text: "Finalizando sistema" },
+                { limit: 100, text: "Sistema online" }
+            ];
+
+            function getStatusByProgress(value) {
+                for (const step of loadingSteps) {
+                    if (value <= step.limit) {
+                        return step.text;
+                    }
+                }
+                return "Sistema online";
+            }
+
+            function setProgress(value) {
+                currentProgress = Math.max(0, Math.min(100, Math.round(value)));
+                loadingBarFill.style.width = `${currentProgress}%`;
+                loadingPercent.textContent = `${currentProgress}%`;
+                loadingStatus.textContent = getStatusByProgress(currentProgress);
+            }
+
+            function finishLoading() {
+                setProgress(100);
+                loadingStatus.textContent = "Sistema online";
+
+                setTimeout(() => {
+                    loadingScreen.classList.add("hidden");
+                    loadingScreen.setAttribute("aria-hidden", "true");
+                    document.body.classList.remove("loading-active");
+                }, 260);
+            }
+
+            const fakeProgressInterval = setInterval(() => {
+                if (siteLoaded) {
+                    return;
+                }
+
+                if (currentProgress < 88) {
+                    const increment = Math.random() * 6 + 1.6;
+                    setProgress(Math.min(88, currentProgress + increment));
+                }
+            }, 90);
+
+            window.addEventListener("load", () => {
+                siteLoaded = true;
+
+                const elapsed = performance.now() - startTime;
+                const remainingDelay = Math.max(0, minimumVisibleTime - elapsed);
+
+                setTimeout(() => {
+                    clearInterval(fakeProgressInterval);
+
+                    const finishInterval = setInterval(() => {
+                        if (currentProgress >= 100) {
+                            clearInterval(finishInterval);
+                            finishLoading();
+                            return;
+                        }
+
+                        setProgress(currentProgress + 4);
+                    }, 24);
+                }, remainingDelay);
+            });
+        }
+
         window.addEventListener("pointerdown", ensureAudioReady, { once: true });
         window.addEventListener("keydown", ensureAudioReady, { once: true });
 
@@ -2269,6 +2718,7 @@
         setupModal();
         setupYoutubeEmbed();
         setupConsoleCopy();
+        setupLoadingScreen();
     </script>
 </body>
 </html>
